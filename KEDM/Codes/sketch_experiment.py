@@ -25,13 +25,15 @@ class parameters:
         self.bipartite = False
         self.N0 = 3
         self.Pr = 0.9
-        self.path = './kedm_results/'
+        self.path = '../kedm_results/'
 param = parameters()
 
 N=6
 A = Helper_Funcs.randomAs(param,N)
 colors = np.random.rand(3,N)
-fig_name = 'sketch.pdf'
+fig_name = 'sketch1.pdf'
+fig_name1 = 'sketch2.pdf'
+eD2, eD2, eX2 = kedm_funcs.Sketch2(param, A, colors,fig_name1,N)
 eDi, eDo, eX = kedm_funcs.SketchX(param, A, colors,fig_name,N)
 np.save(param.path+'eDi',eDi)
 np.save(param.path+'eDo',eDo)

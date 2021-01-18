@@ -254,3 +254,60 @@ def SketchX(param, A,colors, figName,N):
     plt.savefig(param.path+figName)
     plt.close()
     return eDi, eDo, eX
+
+def Sketch2(param, A,colors, figName,N):
+    import matplotlib.pyplot as plt
+    from mpl_toolkits import mplot3d
+    
+    #if d is not 2 or 3, it is rong
+    d = param.d
+    if d > 3 or d < 2:
+        print('Error')
+        return
+    M = 300#Number of realizations
+    maxIter = param.maxIter
+    T_estim = param.T_estim
+    t = np.linspace(T_estim[0],T_estim[1],M)
+    
+    
+    fSize = 18
+    
+    #If 2D plot, plot in 2D, else plot in 3D
+    if d == 2:
+        plt.xlabel('x_axis',fontsize=18)
+        plt.ylabel('y_axis',fontsize=18)
+    else:
+        ax = plt.axes(projection='3d')
+        ax.set_xlabel('x_axis',fontsize=fSize)
+        ax.set_ylabel('y_axis',fontsize=fSize)
+        ax.set_zlabel('z_axis',fontsize=fSize)
+    
+    i = 0
+    eX = 0
+    eDo = 0
+    eDi = 0
+    while i < 1:
+        kedm_output = KEDM(param, A,N)
+        cvx_status = kedm_output.status
+        if cvx_status == 'optimal':
+            i += 1
+            print(i,'out of', maxIter)
+            trj_output = Retrieve_Traj(param,kedm_output,N)#Take trajectory input 
+            eX = eX + Helper_Funcs.mean(trj_output.eX)/maxIter#Trajectory mismatch
+            eDo = eDo + Helper_Funcs.mean(kedm_output.eo)/maxIter#Output error
+            eDi = eDi + Helper_Funcs.mean(kedm_output.ei)/maxIter#Input error
+            A_ = trj_output.A_
+            X = np.zeros((M,d,N))
+            for m in range(M):
+                X[m,:,:] = Helper_Funcs.X_t(A_,t[m],param,N)#Plot the trajectory of x
+            for n in range(N):
+                if d == 2:
+                    plt.plot(X[:,0,n], X[:,1,n],c = colors[:,n],linewidth=1/(maxIter**0.5))#If d=2,plot in 2D
+                else:
+                    ax.plot3D(X[:,0,n], X[:,1,n],X[:,2,n],c = colors[:,n],linewidth=1/(maxIter**0.5))#iF d=3,plot in 3D
+                plt.pause(0.01)
+
+    plt.savefig(param.path+figName)
+    plt.close()
+    return eDi, eDo, eX
+
