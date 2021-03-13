@@ -4,11 +4,7 @@ function [A,b,Aeq,beq]=vert2lcon(V,tol)
 %wrapper extends the capabilities of vert2con to also handle cases where the 
 %polyhedron is not solid in R^n, i.e., where the polyhedron is defined by 
 %both equality and inequality constraints.
-% 
-%SYNTAX:
-%
-%  [A,b,Aeq,beq]=vert2lcon(V,TOL)
-%
+
 %The rows of the N x n matrix V are a series of N vertices of a polyhedron
 %in R^n. TOL is a rank-estimation tolerance (Default = 1e-10).
 %
@@ -18,43 +14,7 @@ function [A,b,Aeq,beq]=vert2lcon(V,tol)
 %   Aeq*x = beq
 %
 %up to machine precision issues.
-%
-%
-%EXAMPLE: 
-%
-%Consider V=eye(3) corresponding to the 3D region defined 
-%by x+y+z=1, x>=0, y>=0, z>=0.
-%
-% 
-%   >>[A,b,Aeq,beq]=vert2lcon(eye(3))
-%
-%
-%     A =
-% 
-%         0.4082   -0.8165    0.4082
-%         0.4082    0.4082   -0.8165
-%        -0.8165    0.4082    0.4082
-% 
-% 
-%     b =
-% 
-%         0.4082
-%         0.4082
-%         0.4082
-% 
-% 
-%     Aeq =
-% 
-%         0.5774    0.5774    0.5774
-% 
-% 
-%     beq =
-% 
-%         0.5774
 
-
-  %%initial stuff
-  
     if nargin<2, tol=1e-10; end
 
     [M,N]=size(V);
@@ -139,21 +99,12 @@ function [A,b,Aeq,beq]=vert2lcon(V,tol)
    end
    
    
-%            ibeq=abs(beq);
-%             ibeq(~beq)=1;
-%            
-%            Aeq=bsxfun(@rdivide,Aeq,ibeq);
-%            beq=beq./ibeq;
-   
            
            
 function [A,b] = vert2con(V,tol)
 % VERT2CON - convert a set of points to the set of inequality constraints
 %            which most tightly contain the points; i.e., create
 %            constraints to bound the convex hull of the given points
-%
-% [A,b] = vert2con(V)
-%
 % V = a set of points, each ROW of which is one point
 % A,b = a set of constraints such that A*x <= b defines
 %       the region of space enclosing the convex hull of
@@ -162,18 +113,7 @@ function [A,b] = vert2con(V,tol)
 % For n dimensions:
 % V = p x n matrix (p vertices, n dimensions)
 % A = m x n matrix (m constraints, n dimensions)
-% b = m x 1 vector (m constraints)
-%
-% NOTES: (1) In higher dimensions, duplicate constraints can
-%            appear. This program detects duplicates at up to 6
-%            digits of precision, then returns the unique constraints.
-%        (2) See companion function CON2VERT.
-%        (3) ver 1.0: initial version, June 2005.
-%        (4) ver 1.1: enhanced redundancy checks, July 2005
-%        (5) Written by Michael Kleder, 
-%
-%Modified by Matt Jacobson - March 29,2011
-% 
+% b = m x 1 vector (m constraints
 
 
 k = convhulln(V);

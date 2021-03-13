@@ -56,10 +56,7 @@ for i = 1:numel(imageDistances)
             s1 = distanceIndex(idx1);
             s2 = distanceIndex(idx2);
         
-            % maybe don't test if deleted, that way we can also get higher
-            % orders? hm, I have to test since they might have been removed
-            % by other criteria. TO DO: test deletion here only if they
-            % have been removed by other criteria.
+
 
             if (s1 ~= s2) && (~deleted(s1)) && (~deleted(s2))
                 % compute an arbitrary point on the "wall" (we don't know if

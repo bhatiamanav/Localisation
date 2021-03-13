@@ -20,11 +20,6 @@ function [echoCombinations, scores] = sort_echoes(D, echoTimes, dim, nPoints)
 
 
 nMicrophones = numel(echoTimes);
-
-%---------------------------------------------------------------------------
-% CONSTRUCT ALL COMBINATIONS OF INPUT ECHOES
-%---------------------------------------------------------------------------
-
 lhSide      = '';
 rhSide      = '';
 rhSideGrid  = '';

@@ -22,52 +22,8 @@ function [V,nr,nre]=lcon2vert(A,b,Aeq,beq,TOL,checkbounds)
 %The optional TOL argument is a tolerance used for both rank-estimation and 
 %for testing feasibility of the equality constraints. Default=1e-10. 
 %The default can also be obtained by passing TOL=[];
-%
-%
-%EXAMPLE: 
-%
-%The 3D region defined by x+y+z=1, x>=0, y>=0, z>=0
-%is described by the following constraint data.
-% 
-%
-%     A =
-% 
-%         0.4082   -0.8165    0.4082
-%         0.4082    0.4082   -0.8165
-%        -0.8165    0.4082    0.4082
-% 
-% 
-%     b =
-% 
-%         0.4082
-%         0.4082
-%         0.4082
-% 
-% 
-%     Aeq =
-% 
-%         0.5774    0.5774    0.5774
-% 
-% 
-%     beq =
-% 
-%         0.5774
-%
-%
-%  >> V=lcon2vert(A,b,Aeq,beq)
-% 
-%         V =
-% 
-%             1.0000    0.0000    0.0000
-%            -0.0000    1.0000         0
-%                  0    0.0000    1.0000
-%
-%
 
 
-
-
-  %%initial argument parsing
   
   nre=[];
   nr=[];
@@ -261,9 +217,7 @@ function [V,nr,nre]=lcon2vert(A,b,Aeq,beq,TOL,checkbounds)
 %            solve the "vertex enumeration" problem. Additionally,
 %            identify redundant entries in the list of inequalities.
 % 
-% V = con2vert(A,b)
-% [V,nr] = con2vert(A,b)
-% 
+
 % Converts the polytope (convex polygon, polyhedron, etc.) defined by the
 % system of inequalities A*x <= b into a list of vertices V. Each ROW
 % of V is a vertex. For n variables:
@@ -271,35 +225,7 @@ function [V,nr,nre]=lcon2vert(A,b,Aeq,beq,TOL,checkbounds)
 % b = m x 1 vector (m constraints)
 % V = p x n matrix (p vertices, n variables)
 % nr = list of the rows in A which are NOT redundant constraints
-% 
-% NOTES: (1) This program employs a primal-dual polytope method.
-%        (2) In dimensions higher than 2, redundant vertices can
-%            appear using this method. This program detects redundancies
-%            at up to 6 digits of precision, then returns the
-%            unique vertices.
-%        (3) Non-bounding constraints give erroneous results; therefore,
-%            the program detects non-bounding constraints and returns
-%            an error. You may wish to implement large "box" constraints
-%            on your variables if you need to induce bounding. For example,
-%            if x is a person's height in feet, the box constraint
-%            -1 <= x <= 1000 would be a reasonable choice to induce
-%            boundedness, since no possible solution for x would be
-%            prohibited by the bounding box.
-%        (4) This program requires that the feasible region have some
-%            finite extent in all dimensions. For example, the feasible
-%            region cannot be a line segment in 2-D space, or a plane
-%            in 3-D space.
-%        (5) At least two dimensions are required.
-%        (6) See companion function VERT2CON.
-%        (7) ver 1.0: initial version, June 2005
-%        (8) ver 1.1: enhanced redundancy checks, July 2005
-%        (9) Written by Michael Kleder
-%
-%Modified by Matt Jacobson - March 30, 2011
-% 
 
-
-   %%%3/4/2012 Improved boundedness test - unfortunately slower than Michael Kleder's
    if checkbounds
        
     [aa,bb,aaeq,bbeq]=vert2lcon(A,TOL);
@@ -486,10 +412,6 @@ function c=Initializer2(TOL,A,b,c)
     slack(slack<0)=0;
     
      
-        %     relto=norm(b);
-        %     relto =relto + (relto==0); 
-        %     
-        %      relres=norm(A*c-b)/relto;
 
      
     IterThresh=maxIter; 
@@ -509,9 +431,7 @@ function c=Initializer2(TOL,A,b,c)
 
       
        c=Ap*(b-s);
-       %slack=b-A*c;
-       %relres=norm(slack)/relto;
-       %if all(0<slack,1)||relres<1e-6||ii==maxIter, break;  end
+  
 
        
     end

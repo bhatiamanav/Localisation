@@ -3,13 +3,6 @@ function echoCombinations = sort_echoes_local(D, echoTimes, dim, windowSizeHalf,
 % echoCombinations = sort_echoes(D, echoTimes, dim, windowSizeHalf, nPoints)
 %------------------------------------------------------------------------------
 %
-% Wrapper for 'sort_echoes' that does the local search. That is, it tries
-% to combine the peaks from Mic1 only with the peaks that are not too far
-% from it. This makes sense for more or less localized microphone arrays.
-% The window size parameter should be set to the diameter of the array
-% (plus some safety margin to account for the speaker size, etc.).
-% 
-%
 % INPUT : D              ... M by M microphone distance matrix
 %         echoTimes      ... M by 1 cell with peak times for each microphone
 %         dim            ... ambient dimension (in principle 3)
