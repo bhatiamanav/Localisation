@@ -1,13 +1,7 @@
-function [Si, Mj, ti, eps] = return_loc(ti_ini,SX, SY, SZ, MX, MY, MZ)
-	tij = zeros(len(SX),len(MX));
+function [Si, Mj, ti, eps] = return_loc(tij)
 	v = 340;
-	for i = 1:len(SX)
-	    for j = 1:len(MX)
-		tij(i,j) = (ti_ini(i).*v) + distance_3D(SX(i),SY(i),SZ(i),MX(j),MY(j),MZ(j));
-	    end
-	end
+
 	V = tij;
-	tij = tij .* (1/v);
 	[ti,Y] = ctod(tij);
 
 	[Si_cap,Mj_cap] = refine_absol(tij,ti,v);

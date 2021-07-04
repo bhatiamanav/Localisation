@@ -57,6 +57,7 @@ function [X, D] = alternating_descent(t_D, dim)
     %Constructing the EDM
     X = L * X;
     [k, o] = find(triu(ones(n),1));%Diagonal remains zero
+
     D = zeros(n);
     D(k + n * (o - 1)) = sum((X(k,:) - X(o,:)).^2, 2);
     D(o + n * (k - 1)) = D(k + n * (o - 1));%Enforcing symmetry about the diagonal

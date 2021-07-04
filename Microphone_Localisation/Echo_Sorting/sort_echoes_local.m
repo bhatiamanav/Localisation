@@ -77,6 +77,7 @@ end
 %------------------------------------------------------------------------------
 
 % Keep only the good ones (non-duplicated)
+
 bestCombinations = bestCombinations(~repeated(1:i-1));
 echoCombinations = echoCombinations(bestCombinations, :);
 
