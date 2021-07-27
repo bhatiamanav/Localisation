@@ -1,0 +1,70 @@
+function [X, D] = alternating_descent_sumanth(t_D, dim)
+    N = 50;%Max. number of iterations
+    [n, m] = size(t_D);%Extracting the matrix size
+    if (n ~= m)%Does not work on rectangular matrices
+        error('The inpur matrix t_D needs to be a square matrix!')
+    end
+
+    L = eye(n) - 1/n*ones(n,1)*ones(n,1).';%L = I - 1/n*e*e'
+
+    X0 = zeros(n, dim);
+    X = X0;
+
+    %Extract the information related to connectivity
+    conn_nodes = cell(1, n);%Connected Nodes (index of positions)
+    conn_vector = cell(1, n);%Connectivity vector (their values)
+    sens_list = 1:n;%List of sensors from 1 to n
+
+    for i = 1 : n
+        sensor_ind = sens_list(i);
+        conn_nodes{i} = find(t_D(sensor_ind, :) ~= 0);%Finding the sensors with known distances (index of positions)
+        conn_vector{i} = t_D(sensor_ind, conn_nodes{i});%Feeding known information to connectivity vector (feeding their values)
+        conn_vector{i} = conn_vector{i}(:); %converting row to column
+    end
+
+    for iter_ind = 1 : N%Repeating for all N points
+        for i = 1 : n%Repeating for all points
+            X_conn = X(conn_nodes{i}, :); %connected points (j belonging to Ni)
+             for cor_ind = 1 : dim%Reapeating for all dimensions
+               
+                 %Finding derivative of polynomial number (26) of the Dokmanic paper
+                %Creating polynomial coefficients for the derivative equation
+                a = 4 * size(X_conn, 1); %4 * number of connected points
+                 b = 12 * sum((X(i,cor_ind) -  X_conn(:,cor_ind)));
+                 c = 4 * sum(sum((repmat(X(i,:), size(X_conn, 1), 1) - X_conn).^2, 2) + 2 * (X(i,cor_ind) -  X_conn(:,cor_ind)).^2 - conn_vector{i});
+                 d = 4 * sum( (X(i,cor_ind) -  X_conn(:,cor_ind)) .* (sum((repmat(X(i,:), size(X_conn, 1), 1)- X_conn).^2, 2) - conn_vector{i}));
+
+                 p = [a b c d];
+                 q = roots(p);
+                 r = real(q(abs(imag(q)) < 1e-15));%Condition for convergence
+                 
+                 if isempty(r)%If no roots, skip the chance
+                    continue;
+                 end
+                 
+                cc = zeros(1, length(r));
+                %Finding the values of derivatives at all the refined roots
+                for j = 1 : length(r)
+                    cc(j) = sum(((X(i,cor_ind)+r(j)-X_conn(:,cor_ind)).^2 + sum((repmat(X(i,:), size(X_conn, 1), 1) - X_conn).^2, 2) - (X(i, cor_ind) - X_conn(:, cor_ind)).^2 - conn_vector{i}).^2);
+               end
+                
+                %Finding the global minimizer
+                [~, cc_min_ind] = min(cc); %finding index of min_value, ignoring its value 
+                min_value = r(cc_min_ind);
+                X(i,cor_ind) = X(i,cor_ind) + min_value;%Replacing the value for the global minimizer
+                
+                X = L * X; %geometric centering matrix
+            end
+        end
+    end
+    
+    %Constructing the EDM
+    X = L * X;
+    
+    [k, o] = find(triu(ones(n),1)); % selecting upper triangular indices
+    D = zeros(n);
+    D(k + n * (o - 1)) = sum((X(k,:) - X(o,:)).^2, 2); % enforcing values to upper triangular indices
+    D(o + n * (k - 1)) = D(k + n * (o - 1));%Enforcing symmetry about the diagonal
+    %Diagonal remains zero
+
+end
