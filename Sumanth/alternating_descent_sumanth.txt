@@ -1,5 +1,5 @@
 function [X, D] = alternating_descent_sumanth(t_D, dim)
-    N = 50;%Max. number of iterations
+    N = 60;%Max. number of iterations
     [n, m] = size(t_D);%Extracting the matrix size
     if (n ~= m)%Does not work on rectangular matrices
         error('The inpur matrix t_D needs to be a square matrix!')
@@ -53,7 +53,6 @@ function [X, D] = alternating_descent_sumanth(t_D, dim)
                 min_value = r(cc_min_ind);
                 X(i,cor_ind) = X(i,cor_ind) + min_value;%Replacing the value for the global minimizer
                 
-                X = L * X; %geometric centering matrix
             end
         end
     end
