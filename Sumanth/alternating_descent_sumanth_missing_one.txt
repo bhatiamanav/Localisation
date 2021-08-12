@@ -1,0 +1,50 @@
+function [X,D] = alternating_descent_sumanth_missing_one(t_D)
+dim = 3; 
+[n, m] = size(t_D);
+    if (n ~= m)
+        error('The inpur matrix t_D needs to be a square matrix!')
+    end
+
+for i = 1 : n
+    for j = i+1 : n
+        m_D = t_D;
+        m_D(n*(j-1)+i) = 0;
+         m_D(n*(i-1)+j) = 0;
+          disp(i);
+       disp(j);
+       
+        [X, D] = alternating_descent_sumanth(m_D, dim)
+         
+    end
+end
+end
+
+%This is working well, but the below code has a problem, and rest of the codes(more elements missing) are written in the same way.
+
+%function [X,D] = alternating_descent_sumanth_missing_one(t_D)
+%dim = 3; 
+%[n, m] = size(t_D);
+ %   if (n ~= m)
+ %       error('The inpur matrix t_D needs to be a square matrix!')
+  %  end
+
+%z=0;
+%for i=1:n
+ %  x = t_D(i,i+1:n);
+  % y=x(:);
+   %z=[z;y];
+%end
+%u= size(z);
+%v= z(2:u,1);
+
+%for j=1:u-1
+ %       v(j)=0;
+ %       w=v';
+  %      [g,h] = find(triu(ones(n),1)); 
+   %     s = zeros(n);
+   %      s(g + n * (h - 1)) = w;
+    %     s(h + n * (g - 1)) = s(g + n * (h - 1));
+     %    disp('New case');
+      %  [X, D] = alternating_descent_sumanth(s, dim)
+   % end
+%end
