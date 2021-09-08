@@ -1,0 +1,34 @@
+function D = rank_complete_edm_sumanth(t_D)
+    
+dim=3;
+    %Alterntes between rank enforcing and known points enforcing
+    N = 1000;%Max. number of iterations for a continuously decreasing sequence of errors
+    Min_err  = 1e-7;%Criteria to stop if error is less than this(case of convergence)
+
+    W = logical(t_D);%masking matrix
+    x = logical(~W);
+    n = size(t_D, 1);
+    mean_d = mean(mean(sqrt(t_D)));
+    D = t_D;%Incomplete EDM
+    D(x) = mean_d;%Enforcing known points
+    I = logical(eye(n));%Identity matrix
+    J = I - (1/n)*ones(n);
+
+      for i = 1:N
+            D_prev = D;
+            %Doing rank thresholding
+           
+                [U, S, V] = svd(D);
+                S(dim+3:end, dim+3:end) = 0;%Utilising rank property of EDM's
+                D = U * S * V';
+               
+            D(W) = t_D(W);%Enforce known entries
+            D(I) = 0;%Zero out the diagonal
+            D(D<0) = 0;%Enforce positivity of matrix.
+
+            error = norm(D_prev - D, 'fro');%Error in enforced matrix
+
+            if error < Min_err %If error is less than min error, matrix is achieved
+                break;
+            end
+      end
