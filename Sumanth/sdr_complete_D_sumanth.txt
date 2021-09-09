@@ -6,7 +6,7 @@ function D = sdr_complete_D_sumanth(t_D)
     y = -1/sqrt(n);%Initialising the given variables
     V = [y*ones(1, n-1); x*ones(n-1) + eye(n-1)];
     e = ones(n, 1);
-    epss = 2;
+    epss = 5; %to get valid output, epss should be >= 5
 
   
     cvx_begin sdp

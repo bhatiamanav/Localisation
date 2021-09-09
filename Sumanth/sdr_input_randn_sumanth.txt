@@ -1,0 +1,13 @@
+function t_D = sdr_input_randn_sumanth(A, var)
+
+  n = size(A, 1);
+  I = logical(eye(n));
+  
+ t_D= A + var * randn(size(A));
+  t_D(I) = 0;
+ % D = sdr_complete_D_sumanth(t_D);
+% err = norm(t_D - D, 'fro');
+ 
+end
+
+% err = norm(t_D - D, 'fro')

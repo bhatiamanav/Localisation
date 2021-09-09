@@ -1,0 +1,13 @@
+function t_D = sdr_input_neg_rand_sumanth(A, b)
+%noise uniformly distributed in [0,b]
+  n = size(A, 1);
+  I = logical(eye(n));
+  
+t_D= A - b.*rand(size(A));
+  t_D(I) = 0;
+ % D = sdr_complete_D_sumanth(t_D);
+% err = norm(t_D - D, 'fro');
+ 
+end
+
+% err = norm(t_D - D, 'fro')
