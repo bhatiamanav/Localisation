@@ -1,6 +1,6 @@
 function [Si,Mj] = compute_locations_2D_sumanth(Si_cap,Mj_cap,R,t)
 
-    %The Transformation function
+    %The Transformation function.
     sz1 = size(Si_cap);
     sz2 = size(Mj_cap);
     O1 = ones(1,sz2(2));

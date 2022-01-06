@@ -11,7 +11,7 @@ function [Si_cap, Mj_cap] = refine_absol_2D_sumanth_tdoa(tij,ti,v)
     disp(size(U));
      disp(size(S));
       disp(size(V));
-      k=4;
+      k=4; %size of si,mj
 
     Si_cap = (U(:,1:k) * sqrt(S(1:k,1:k))).';
     Mj_cap = (V(:,1:k) * sqrt(S(1:k,1:k))).';
