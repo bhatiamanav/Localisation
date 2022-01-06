@@ -1,4 +1,4 @@
-function [Si_cap, Mj_cap] = abc(tij,ti,v)
+function [Si_cap, Mj_cap] = refine_absol_2D_sumanth_tdoa(tij,ti,v)
     
     n = size(tij,2);
     v_sq = (v * v);
