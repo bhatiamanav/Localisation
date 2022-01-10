@@ -4,7 +4,7 @@ r1 = 340*randi([5, 20], 1 , 2);
 r2 = 340*randi([-10, 10], 1 , 2);
 trans = 340*randi([0, 10], 2 , 1);
 ang = randi([0, 360], 1 , 1);
-Ti = randi([1, 10], 1 , m+4);
+Ti = randi([1, 10], 1 , 1)*ones(1,m+4);
 
 side1 = r1(1);
 side2 = r1(2);

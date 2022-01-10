@@ -1,4 +1,4 @@
-function [Si,Mj] = compute_locations_2D_sumanth(Si_cap,Mj_cap,R,t)
+function [Si,Mj] = compute_locations_2d_sumanth_version_two(Si_cap,Mj_cap,R,t)
 
     %The Transformation function
     sz1 = size(Si_cap);
@@ -18,18 +18,22 @@ function [Si,Mj] = compute_locations_2D_sumanth(Si_cap,Mj_cap,R,t)
 
     Mj_cap_dash = (H_s_inv\H_m) * Mj_cap; 
     Mj_cap_dash_T = Mj_cap_dash';
-    w = sz2(2);
-    C = zeros(w,6);
-    D = zeros(w,1);
+    w1 = sz2(2);
+    C = zeros(w1,6);
+    D = zeros(w1,1);
+    w2 = 0;
     
-    for i = 1:w
-        C(i,1) = (Mj_cap_dash_T(i,1))^2;
-        C(i,2) = 2*(Mj_cap_dash_T(i,1)*Mj_cap_dash_T(i,2)) ;
-        C(i,3) = 2*(Mj_cap_dash_T(i,1)*Mj_cap_dash_T(i,3));
-        C(i,4) = (Mj_cap_dash_T(i,2))^2;
-        C(i,5) = 2*(Mj_cap_dash_T(i,2)*Mj_cap_dash_T(i,3));
-        C(i,6) = (Mj_cap_dash_T(i,3))^2;
-        D(i,1) = Mj_cap_dash_T(i,1)*Mj_cap_dash_T(i,4);
+    for i = 1:w1
+        for j = i:w1
+            w2 = w2+1;
+        C(w2,1) = Mj_cap_dash_T(i,1)*Mj_cap_dash_T(j,1);
+        C(w2,2) = (Mj_cap_dash_T(i,1)*Mj_cap_dash_T(j,2)) + (Mj_cap_dash_T(i,2)*Mj_cap_dash_T(j,1));
+        C(w2,3) = (Mj_cap_dash_T(i,1)*Mj_cap_dash_T(j,3)) + (Mj_cap_dash_T(i,3)*Mj_cap_dash_T(j,1));
+        C(w2,4) = Mj_cap_dash_T(i,2)*Mj_cap_dash_T(j,2);
+        C(w2,5) = (Mj_cap_dash_T(i,2)*Mj_cap_dash_T(j,3)) + (Mj_cap_dash_T(i,3)*Mj_cap_dash_T(j,2));
+        C(w2,6) = Mj_cap_dash_T(i,3)*Mj_cap_dash_T(j,3);
+        D(w2,1) = 0.5*((Mj_cap_dash_T(i,1)*Mj_cap_dash_T(j,4)) + (Mj_cap_dash_T(i,4)*Mj_cap_dash_T(j,1))- (((Mj_cap_dash_T(i,1))-(Mj_cap_dash_T(j,1)))^2)- (((Mj_cap_dash_T(i,2))-(Mj_cap_dash_T(j,2)))^2));
+        end
     end
     
     E = linsolve(C,D);
