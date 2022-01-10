@@ -1,5 +1,6 @@
-function [Si_quote_cap, Si_cap, Mj_cap] = refine_absol_2D_sumanth(tij,ti,v)
+function [Si_quote_cap, Si_cap, Mj_cap] = refine_absol_2D_sumanth(tij,ti)
 
+    v = 340;
     ti_dia = diag(ti);
     
     sz = size(tij);

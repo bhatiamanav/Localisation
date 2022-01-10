@@ -1,5 +1,6 @@
-function [Si_cap, Mj_cap] = refine_absol_2D_sumanth_tdoa(tij,ti,v)
+function [Si_cap, Mj_cap] = refine_absol_2D_sumanth_tdoa(tij,ti)
     
+    v = 340;
     n = size(tij,2);
     v_sq = (v * v);
     ones_1_n = ones(1,n);
