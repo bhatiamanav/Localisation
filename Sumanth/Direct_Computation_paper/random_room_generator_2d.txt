@@ -145,4 +145,13 @@ else
     
 end
 
+V_plot = [V; V(1,:)];
+plot(V_plot(:,1),V_plot(:,2))
+title('Room Configuration')
+hold on
+scatter(s(:,1),s(:,2),'o')
+scatter(M(:,1),M(:,2),'*')
+hold off
+
+
 end
