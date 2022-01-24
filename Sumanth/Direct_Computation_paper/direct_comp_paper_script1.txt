@@ -2,26 +2,40 @@ V = 340*[0 0; 8 0; 8 8; 0 8];
 s = 340*[3 2];
 M = 340*[1 6; 2 5; 4 5; 4 4; 5 1; 6 6; 7 1; 7 3];
 Ti = [2;2;2;2;2];
-tij = compute_tij(V,s,M,Ti);
+%s = 340*[4 4];
+%M = 340*[1 1; 1 7; 2 3; 3 6; 5 2; 6 1; 6 6; 7 5];
+
+
+[tij,S] = compute_tij(V,s,M,Ti);
 disp('True tij:');
 disp(tij);
+
 [ti] = calctod_2D_sumanth(tij);
 disp('Obtained ti:');
 disp(ti);
+
 [Si_cap, Mj_cap] = refine_absol_2D_sumanth_tdoa(tij,ti);
 disp('Si_cap:');
 disp(Si_cap);
 disp('Mj_cap:');
 disp(Mj_cap);
+
 R = [1 0; 0 1];
 t = [0 0];
+
 [Si,Mj] = compute_locations_2D_sumanth(Si_cap,Mj_cap,R,t);
 disp('Si:');
 disp(Si);
 disp('Mj:');
 disp(Mj);
+
 [si,mj] = obtain_source_mic_locations(Si,Mj);
 disp('si:');
 disp(si);
 disp('mj:');
 disp(mj);
+
+disp('S:');
+disp([S';zeros(1,size(S,1))]);
+disp('M:');
+disp([M';zeros(1,size(M,1))]);

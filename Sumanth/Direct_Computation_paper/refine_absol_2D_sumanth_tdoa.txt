@@ -9,9 +9,14 @@ function [Si_cap, Mj_cap] = refine_absol_2D_sumanth_tdoa(tij,ti)
     inp_v = v_sq*prop_mat_sq;
     
     [U,S,V] = svd(inp_v);
-    disp(size(U));
-     disp(size(S));
-      disp(size(V));
+    
+    %disp(size(U));
+     %disp(size(S));
+      %disp(size(V));
+      %disp(U);
+      %disp(S);
+      %disp(V);
+      
       k=4;
       S_Trans = S';
 

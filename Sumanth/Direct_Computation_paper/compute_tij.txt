@@ -1,4 +1,4 @@
-function tij = compute_tij(V,s,M,Ti)
+function [tij,S] = compute_tij(V,s,M,Ti)
 
 v = 340;
 a = size(V,1);
