@@ -2,9 +2,9 @@ V = 340*[0 0; 8 0; 8 8; 0 8];
 s = 340*[3 2];
 M = 340*[1 6; 2 5; 4 5; 4 4; 5 1; 6 6; 7 1; 7 3];
 Ti = [2;2;2;2;2];
+
 %s = 340*[4 4];
 %M = 340*[1 1; 1 7; 2 3; 3 6; 5 2; 6 1; 6 6; 7 5];
-
 
 [tij,S] = compute_tij(V,s,M,Ti);
 disp('True tij:');
@@ -35,16 +35,19 @@ disp(si);
 disp('mj:');
 disp(mj);
 
-S = [S'; zeros(1,size(S,1))];
-M = [M'; zeros(1,size(M,1))];
+s_1 = size(S,1);
+s_2 = size(M,1);
+
+S = [S'; zeros(1,s_1)];
+M = [M'; zeros(1,s_2)];
 
 disp('S:');
 disp(S);
 disp('M:');
 disp(M);
 
-point_set_X_a = [si , mj];
-point_set_Y = [S , M];
+point_set_X_a = [mj , si];
+point_set_Y = [M , S];
 
 n1 = size(point_set_X_a,2);
 n2 = size(point_set_Y,2);
@@ -63,3 +66,45 @@ disp('edm_X_a:');
 disp(edm_X_a);
 disp('edm_Y:');
 disp(edm_Y);
+
+edm_Y_1 = edm_Y(1:s_2,1:s_2);
+edm_X_a_1 = edm_X_a(1:s_2,1:s_2);
+
+edm_Y_2 = edm_Y(1:s_2,s_2 + 1:s_2 + s_1);
+edm_X_a_2 = edm_X_a(1:s_2,s_2 + 1:s_2 + s_1);
+
+edm_Y_3 = edm_Y(s_2 + 1:s_2 + s_1,s_2 + 1:s_2 + s_1);
+edm_X_a_3 = edm_X_a(s_2 + 1:s_2 + s_1,s_2 + 1:s_2 + s_1);
+
+norm_Y = norm(edm_Y,'fro');
+norm_X_a = norm(edm_X_a,'fro');
+
+norm_Y_1 = norm(edm_Y_1,'fro');
+norm_X_a_1 = norm(edm_X_a_1,'fro');
+
+norm_Y_2 = 2*norm(edm_Y_2,'fro');
+norm_X_a_2 = 2*norm(edm_X_a_2,'fro');
+
+norm_Y_3 = norm(edm_Y_3,'fro');
+norm_X_a_3 = norm(edm_X_a_3,'fro');
+
+disp('norm_Y:');
+disp(norm_Y);
+disp('norm_X_a:');
+disp(norm_X_a);
+
+rel_err = abs((norm_Y - norm_X_a)/norm_Y);
+disp('relative error :');
+disp(rel_err);
+
+rel_err_mic_mic = abs((norm_Y_1 - norm_X_a_1)/norm_Y_1);
+disp('relative error of mic-mic :');
+disp(rel_err_mic_mic);
+
+rel_err_sour_mic = abs((norm_Y_2 - norm_X_a_2)/norm_Y_2);
+disp('relative error of sour-mic :');
+disp(rel_err_sour_mic);
+
+rel_err_sour_sour = abs((norm_Y_3 - norm_X_a_3)/norm_Y_3);
+disp('relative error of sour-sour :');
+disp(rel_err_sour_sour);
