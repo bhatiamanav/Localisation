@@ -35,7 +35,31 @@ disp(si);
 disp('mj:');
 disp(mj);
 
+S = [S'; zeros(1,size(S,1))];
+M = [M'; zeros(1,size(M,1))];
+
 disp('S:');
-disp([S';zeros(1,size(S,1))]);
+disp(S);
 disp('M:');
-disp([M';zeros(1,size(M,1))]);
+disp(M);
+
+point_set_X_a = [si , mj];
+point_set_Y = [S , M];
+
+n1 = size(point_set_X_a,2);
+n2 = size(point_set_Y,2);
+
+[k, o] = find(triu(ones(n1),1));
+edm_X_a = zeros(n1);
+    edm_X_a(k + n1 * (o - 1)) = sum((point_set_X_a(:,k) - point_set_X_a(:,o)).^2, 1); 
+    edm_X_a(o + n1 * (k - 1)) = edm_X_a(k + n1 * (o - 1));
+    
+[r, u] = find(triu(ones(n2),1));
+edm_Y = zeros(n2);
+    edm_Y(r + n2 * (u - 1)) = sum((point_set_Y(:,r) - point_set_Y(:,u)).^2, 1); 
+    edm_Y(u + n2 * (r - 1)) = edm_Y(r + n2 * (u - 1));
+    
+disp('edm_X_a:');
+disp(edm_X_a);
+disp('edm_Y:');
+disp(edm_Y);
