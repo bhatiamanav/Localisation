@@ -1,4 +1,4 @@
-function [edm_X_a] = init_estim_dir_comp(V,s,M,Ti)
+function [edm_X_a, sz_si, sz_mj, S, si, mj] = init_estim_dir_comp(V,s,M,Ti)
 
 [tij,S] = compute_tij(V,s,M,Ti);
 [ti] = calctod_2D_sumanth(tij);
@@ -10,6 +10,8 @@ t = [0 0];
 [Si,Mj] = compute_locations_2D_sumanth(Si_cap,Mj_cap,R,t);
 [si,mj] = obtain_source_mic_locations(Si,Mj);
 
+sz_si = size(si,2);
+sz_mj = size(mj,2);
 
 point_set_X_a = [mj , si];
 
