@@ -79,32 +79,23 @@ edm_X_a_3 = edm_X_a(s_2 + 1:s_2 + s_1,s_2 + 1:s_2 + s_1);
 norm_Y = norm(edm_Y,'fro');
 norm_X_a = norm(edm_X_a,'fro');
 
-norm_Y_1 = norm(edm_Y_1,'fro');
-norm_X_a_1 = norm(edm_X_a_1,'fro');
-
-norm_Y_2 = 2*norm(edm_Y_2,'fro');
-norm_X_a_2 = 2*norm(edm_X_a_2,'fro');
-
-norm_Y_3 = norm(edm_Y_3,'fro');
-norm_X_a_3 = norm(edm_X_a_3,'fro');
-
 disp('norm_Y:');
 disp(norm_Y);
 disp('norm_X_a:');
 disp(norm_X_a);
 
-rel_err = abs((norm_Y - norm_X_a)/norm_Y);
+rel_err = (norm((edm_Y - edm_X_a),'fro'))/(norm(edm_Y,'fro'));
 disp('relative error :');
 disp(rel_err);
 
-rel_err_mic_mic = abs((norm_Y_1 - norm_X_a_1)/norm_Y_1);
+rel_err_mic_mic = (norm((edm_Y_1 - edm_X_a_1),'fro'))/(norm(edm_Y_1,'fro'));
 disp('relative error of mic-mic :');
 disp(rel_err_mic_mic);
 
-rel_err_sour_mic = abs((norm_Y_2 - norm_X_a_2)/norm_Y_2);
+rel_err_sour_mic = (2*(norm((edm_Y_2 - edm_X_a_2),'fro')))/(2*(norm(edm_Y_2,'fro')));
 disp('relative error of sour-mic :');
 disp(rel_err_sour_mic);
 
-rel_err_sour_sour = abs((norm_Y_3 - norm_X_a_3)/norm_Y_3);
+rel_err_sour_sour = (norm((edm_Y_3 - edm_X_a_3),'fro'))/(norm(edm_Y_3,'fro'));
 disp('relative error of sour-sour :');
 disp(rel_err_sour_sour);

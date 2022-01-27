@@ -29,7 +29,7 @@ end
 
 X = [X' ; zeros(1,sz_mj + sz_si)];
 mj_est = X(:,1:sz_mj);
-si_est = X(:,1:sz_si);
+si_est = X(:,sz_mj + 1:sz_mj + sz_si);
 
 S = [S' ; zeros(1,sz_si)];
 M = [M' ; zeros(1,sz_mj)];
