@@ -1,0 +1,70 @@
+S = 340*[1 5; 3 1; 4 4; 6 3; 7 2];
+M = 340*[1 1; 1 7; 2 3; 3 6; 5 2; 6 1; 6 6; 7 5];
+Ti = [2;3;4;5;6];
+
+dim = 2;
+
+[edm_X_a, sz_si, sz_mj, si, mj] = init_estim_dir_comp_multiple_sources(S,M,Ti);
+
+X_M_S_a = [M ; S];
+n_1 = size(X_M_S_a,1);
+
+[k, o] = find(triu(ones(n_1),1));
+edm_X_M_S_a = zeros(n_1);
+    edm_X_M_S_a(k + n_1 * (o - 1)) = sum((X_M_S_a(k,:) - X_M_S_a(o,:)).^2, 2); 
+    edm_X_M_S_a(o + n_1 * (k - 1)) = edm_X_M_S_a(k + n_1 * (o - 1));
+    
+disp('edm_X_M_S_a :');
+disp(edm_X_M_S_a);
+
+disp('edm_X_a :');
+disp(edm_X_a);
+
+edm_X_a_iter = edm_X_a;
+
+for conv = 1:40
+   
+    edm_X_a_iter(sz_mj + 1:sz_mj + sz_si,sz_mj + 1:sz_mj + sz_si) = edm_X_M_S_a(sz_mj + 1:sz_mj + sz_si,sz_mj + 1:sz_mj + sz_si);
+    
+    [~, edm_X_a_iter_sub] = alternating_descent_sumanth(edm_X_a_iter, dim);
+    
+    edm_X_a_iter = edm_X_a_iter_sub;
+    
+end
+
+[X , edm_X_a_iter_final] = alternating_descent_sumanth(edm_X_a_iter, dim);
+
+X = [X' ; zeros(1,sz_mj + sz_si)];
+mj_est = X(:,1:sz_mj);
+si_est = X(:,sz_mj + 1:sz_mj + sz_si);
+
+S = [S' ; zeros(1,sz_si)];
+M = [M' ; zeros(1,sz_mj)];
+
+disp('edm_X_a_iter_final :');
+disp(edm_X_a_iter_final);
+disp('X :');
+disp(X);
+
+disp('Original S :');
+disp(S);
+disp('original M :');
+disp(M);
+
+disp('initial estimate si :');
+disp(si);
+disp('initial estimate mj :');
+disp(mj);
+
+disp('final estimate si_est :');
+disp(si_est);
+disp('final estimate mj_est :');
+disp(mj_est);
+
+rel_err_intermediate = (norm((edm_X_M_S_a - edm_X_a),'fro'))/(norm(edm_X_M_S_a,'fro'));
+disp('rel_err_intermediate :');
+disp(rel_err_intermediate);
+
+rel_err_final = (norm((edm_X_M_S_a - edm_X_a_iter_final),'fro'))/(norm(edm_X_M_S_a,'fro'));
+disp('rel_err_final :');
+disp(rel_err_final);

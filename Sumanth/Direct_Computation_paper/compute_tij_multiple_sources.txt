@@ -1,0 +1,19 @@
+function [tij] = compute_tij_multiple_sources(S,M,Ti)
+
+v = 340;
+sz_S = size(S,1);
+sz_M = size(M,1);
+prop = zeros(sz_S,sz_M);
+ones_vec = ones(1,sz_M);
+
+for j=1:sz_S
+    for k=1:sz_M
+        prop(j,k) = (norm(S(j,:)-M(k,:)))/v;
+    end
+end
+disp('tij - ti:');
+disp(prop);
+tij = Ti*ones_vec + prop;
+disp('tij :');
+disp(tij);
+end

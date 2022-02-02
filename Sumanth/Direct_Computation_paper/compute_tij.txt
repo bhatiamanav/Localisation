@@ -48,4 +48,6 @@ end
 disp('tij - ti:');
 disp(prop);
 tij = Ti*ones_vec + prop;
+disp('tij :');
+disp(tij);
 end
