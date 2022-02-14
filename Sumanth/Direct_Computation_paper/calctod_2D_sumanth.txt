@@ -1,7 +1,6 @@
 function [ti] = calctod_2D_sumanth(tij)
 
 sz = size(tij);
-%ti = zeros(1,sz(1));
 
 A = tij .^ 2;
 B = -2 * tij;
@@ -30,7 +29,17 @@ end
 
 Y =[A_bar; B_bar];
 
+%disp('Y :');
+%disp(Y);
+
+%rnk = rank(Y);
+%disp('Rank of Y :');
+%disp(rnk);
+
 X = O * pinv(Y);
+
+%disp('X :');
+%disp(X);
 
 tin(1) = X(5)/X(1);
 tin(2) = X(6)/X(2);
@@ -44,9 +53,32 @@ end
 Ti_vec(i,:) = tii;
 end
 
+%disp('Ti_vec :');
+%disp(Ti_vec);
+
+if sz_comb > 1
 Ti_int = cast(Ti_vec,'uint8');
-ti_mode = mode(Ti_int);
+
+sz_Ti_int_col = size(Ti_int,2);
+mode_group = zeros(1,sz_Ti_int_col);
+
+for i = 1:sz_Ti_int_col
+col = Ti_int(:,i);
+mode_col = mode(col);
+if mode_col == 0
+    col_nz = nonzeros(col);
+    mode_orig = mode(col_nz);
+else
+    mode_orig = mode_col;
+end
+mode_group(i) = mode_orig;
+end
+
+ti_mode = mode_group;
 ti = double(ti_mode);
+else
+    ti = Ti_vec;
+end
 
 disp('ti :');
 disp(ti);
