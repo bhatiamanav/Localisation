@@ -5,7 +5,7 @@ row3_2 = zeros(1,size(Mj,2));
 
 
 si = [-0.5*Si(2,:); -0.5*Si(3,:); row3_1 ];
-mj = [-0.5*Mj(2,:); -0.5*Mj(3,:); row3_2];
+mj = [Mj(2,:); Mj(3,:); row3_2];
 
 si = real(si);
 mj = real(mj);
