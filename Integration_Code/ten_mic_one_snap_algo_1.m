@@ -1,11 +1,12 @@
-function [mj, si, ti, eps_best, theta_best] = ten_mic_one_snap_algo_1(tij, M, err)
+function [mj, si, ti, eps_best, theta_best] = ten_mic_one_snap_algo_1(tij, M, err, thresh, peaks)
     theta_orig = 340 * tij;
     M_s = 340 * M;
     M_trans = M_s';
     num_peaks = size(M,2);
-    %num_mic = size(M,1);
+    num_mic = size(M,1);
     theta_est = zeros(size(M_trans));
     eps_best = Inf;
+    dim = 3;
     
     for i1 = 1:num_peaks
         theta_est(i1, 1) = M_trans(i1, 1);
@@ -62,6 +63,15 @@ function [mj, si, ti, eps_best, theta_best] = ten_mic_one_snap_algo_1(tij, M, er
                                                 theta_est(i10, 10) = M_trans(i10, 10);
                                             else
                                                 continue
+                                            end
+                                            
+                                            for ii = 1:7
+                                                [~, echoScores] = sort_echoes(D, peaks(:, ii), dim, num_mic);
+                                                for jj = 1:len(echoScores)
+                                                    if echoScores(jj) > thresh
+                                                        break
+                                                    end
+                                                end
                                             end
                                             
                                             [ti] = calctod_2D_sumanth(theta_est);
