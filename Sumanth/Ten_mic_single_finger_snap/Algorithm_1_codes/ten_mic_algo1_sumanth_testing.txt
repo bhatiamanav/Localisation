@@ -1,0 +1,202 @@
+function [R_hat, S_hat, T_hat, Thet_best, eps_best, count_best] = ten_mic_algo1_sumanth_testing(peak_time_matrix)
+
+%peak_time_matrix : first row = first microphone peak timestamps, so on.
+%size = mic x peaks.
+
+count = 0;
+eps_best = Inf;
+%sz = size(peak_time_matrix);
+%disp(sz);
+sz_pk_t_mat_mic = size(peak_time_matrix ,1);
+sz_pk_t_mat_peak = size(peak_time_matrix ,2);
+
+peak_time_matrix_sub = peak_time_matrix(1:sz_pk_t_mat_mic, 2:sz_pk_t_mat_peak);
+peak_time_matrix_sub_T = peak_time_matrix_sub';
+sz_peak_time_matrix_sub_T = size(peak_time_matrix_sub_T);
+
+Thet_basic = zeros(sz_peak_time_matrix_sub_T);
+Thet = zeros(sz_peak_time_matrix_sub_T);
+
+Thet_basic(:,1) = peak_time_matrix_sub_T(:,1);
+Thet_perm_1 = perms(Thet_basic(:,1));
+Thet_perm_1_T = Thet_perm_1';
+sz_Thet_perm_1 = size(Thet_perm_1_T,2);
+
+Thet_basic(:,2) = peak_time_matrix_sub_T(:,2);
+Thet_perm_2 = perms(Thet_basic(:,2));
+Thet_perm_2_T = Thet_perm_2';
+sz_Thet_perm_2 = size(Thet_perm_2_T,2);
+
+Thet_basic(:,3) = peak_time_matrix_sub_T(:,3);
+Thet_perm_3 = perms(Thet_basic(:,3));
+Thet_perm_3_T = Thet_perm_3';
+sz_Thet_perm_3 = size(Thet_perm_3_T,2);
+
+Thet_basic(:,4) = peak_time_matrix_sub_T(:,4);
+Thet_perm_4 = perms(Thet_basic(:,4));
+Thet_perm_4_T = Thet_perm_4';
+sz_Thet_perm_4 = size(Thet_perm_4_T,2);
+
+Thet_basic(:,5) = peak_time_matrix_sub_T(:,5);
+Thet_perm_5 = perms(Thet_basic(:,5));
+Thet_perm_5_T = Thet_perm_5';
+sz_Thet_perm_5 = size(Thet_perm_5_T,2);
+
+Thet_basic(:,6) = peak_time_matrix_sub_T(:,6);
+Thet_perm_6 = perms(Thet_basic(:,6));
+Thet_perm_6_T = Thet_perm_6';
+sz_Thet_perm_6 = size(Thet_perm_6_T,2);
+
+Thet_basic(:,7) = peak_time_matrix_sub_T(:,7);
+Thet_perm_7 = perms(Thet_basic(:,7));
+Thet_perm_7_T = Thet_perm_7';
+sz_Thet_perm_7 = size(Thet_perm_7_T,2);
+
+Thet_basic(:,8) = peak_time_matrix_sub_T(:,8);
+Thet_perm_8 = perms(Thet_basic(:,8));
+Thet_perm_8_T = Thet_perm_8';
+sz_Thet_perm_8 = size(Thet_perm_8_T,2);
+
+Thet_basic(:,9) = peak_time_matrix_sub_T(:,9);
+Thet_perm_9 = perms(Thet_basic(:,9));
+Thet_perm_9_T = Thet_perm_9';
+sz_Thet_perm_9 = size(Thet_perm_9_T,2);
+
+Thet_basic(:,10) = peak_time_matrix_sub_T(:,10);
+Thet_perm_10 = perms(Thet_basic(:,10));
+Thet_perm_10_T = Thet_perm_10';
+sz_Thet_perm_10 = size(Thet_perm_10_T,2);
+
+for i1 = 1 : sz_Thet_perm_1
+    if count <= 10
+    Thet(:,1) = Thet_perm_1_T(:,i1);
+    
+    for i2 = 1 : sz_Thet_perm_2
+        if count <= 10
+    Thet(:,2) = Thet_perm_2_T(:,i2);
+    
+    for i3 = 1 : sz_Thet_perm_3
+        if count <= 10
+    Thet(:,3) = Thet_perm_3_T(:,i3);
+    
+    for i4 = 1 : sz_Thet_perm_4
+        if count <= 10
+    Thet(:,4) = Thet_perm_4_T(:,i4);
+    
+    for i5 = 1 : sz_Thet_perm_5
+        if count <= 10
+    Thet(:,5) = Thet_perm_5_T(:,i5);
+    
+    for i6 = 1 : sz_Thet_perm_6
+        if count <= 10
+    Thet(:,6) = Thet_perm_6_T(:,i6);
+    
+    for i7 = 1 : sz_Thet_perm_7
+        if count <= 10
+    Thet(:,7) = Thet_perm_7_T(:,i7);
+    
+    for i8 = 1 : sz_Thet_perm_8
+        if count <= 10
+    Thet(:,8) = Thet_perm_8_T(:,i8);
+    
+    for i9 = 1 : sz_Thet_perm_9
+        if count <= 10
+    Thet(:,9) = Thet_perm_9_T(:,i9);
+    
+    for i10 = 1 : sz_Thet_perm_10
+        if count <= 10
+    Thet(:,10) = Thet_perm_10_T(:,i10);
+    
+    tij = Thet;
+    [ti] = calctod_2D_sumanth(tij);
+    [Si_cap, Mj_cap] = refine_absol_2D_sumanth_tdoa(tij,ti);
+    R = [1 0; 0 1];
+    t = [0 0];
+    [Si,Mj] = compute_locations_2D_sumanth(Si_cap,Mj_cap,R,t);
+    [si,mj] = obtain_source_mic_locations(Si,Mj);
+    
+    
+v = 340;
+sz_si = size(si,2);
+sz_mj = size(mj,2);
+
+ones_vec_mj = ones(sz_mj,1);
+prop_est = zeros(sz_si,sz_mj);
+
+for j=1:sz_si
+    for k=1:sz_mj
+        prop_est(j,k) = (norm(si(:,j)-mj(:,k)))/v;
+    end
+end
+
+tij_est = (ti')*(ones_vec_mj') + prop_est;
+
+eps = norm(tij - tij_est,'fro');
+count = count + 1;
+
+if eps < eps_best
+    Thet_best_sub = Thet;
+    eps_best = eps;
+    count_best = count;
+    %R_hat = mj;
+    %S_hat = si;
+    %T_hat = ti;
+end
+
+%count = count + 1;
+        end
+    end
+        end
+    end
+        end
+    end
+        end
+    end
+        end
+        
+    end
+    end
+    end
+    end
+    end
+    end
+    end
+    end
+    end
+    end
+end
+
+Thet_best = [(peak_time_matrix(:,1))' ; Thet_best_sub];
+disp('Thet_best :');
+disp(Thet_best);
+
+tij = Thet_best;
+    [ti] = calctod_2D_sumanth(tij);
+    [Si_cap, Mj_cap] = refine_absol_2D_sumanth_tdoa(tij,ti);
+    R = [1 0; 0 1];
+    t = [0 0];
+    [Si,Mj] = compute_locations_2D_sumanth(Si_cap,Mj_cap,R,t);
+    [si,mj] = obtain_source_mic_locations(Si,Mj);
+    
+    
+v = 340;
+sz_si = size(si,2);
+sz_mj = size(mj,2);
+
+ones_vec_mj = ones(sz_mj,1);
+prop_est = zeros(sz_si,sz_mj);
+
+for j=1:sz_si
+    for k=1:sz_mj
+        prop_est(j,k) = (norm(si(:,j)-mj(:,k)))/v;
+    end
+end
+
+tij_est = (ti')*(ones_vec_mj') + prop_est;
+eps_best = norm(tij - tij_est,'fro');
+
+    R_hat = mj;
+    S_hat = si;
+    T_hat = ti;
+    
+end
